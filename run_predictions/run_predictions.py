@@ -3,7 +3,9 @@ import pandas as pd
 import numpy as np
 from tqdm import tqdm
 from keras.models import load_model
-import tensorflow.python.keras.backend as tfback
+# import tensorflow.python.keras.backend as tfback
+# HPC doesn't need the .python
+import tensorflow.keras.backend as tfback
 import tensorflow as tf
 
 # Initialise GPU session
