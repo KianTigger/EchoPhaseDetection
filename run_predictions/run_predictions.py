@@ -70,7 +70,7 @@ for file in tqdm(filenames):
     for i in range(len(chunked_sequence)):
       tempArr=np.arange(int(len(image_sequence)),dtype=float)
       tempArr=np.full_like(tempArr,np.nan,dtype=float)
-      prediction = SAVED_MODEL.predict(np.expand_dims(chunked_sequence[i], axis=0))
+      prediction = SAVED_MODEL.predict(np.expand_dims(chunked_sequence[i], axis=0), verbose=0)
       tempArr[start:end]=prediction
       pred=np.vstack([pred,tempArr])
       start+=STRIDE
