@@ -23,11 +23,19 @@ tf.config.list_logical_devices()
 
 ''' Generate multibeat predictions for videos of arbitrary length '''
 
+# Set the path to the directory you want to access
+#Home PC
+# path = r"/mnt/c/Users/Kian Kordtomeikel/Documents/Coding/Dissertation/Datasets/EchoNet-Dynamic"
+#Uni HPC
+path = "../EchoNet-Dynamic"
+
+filenames = pd.read_csv(path + "/FileList.csv", usecols=["FileName"])["FileName"].tolist()
+
 # Load filenames from csv or directory, or type one filename
-filenames = pd.read_csv("../EchoNet-Dynamic/FileList.csv", usecols=["FileName"])["FileName"].tolist()
+# filenames = pd.read_csv("../EchoNet-Dynamic/FileList.csv", usecols=["FileName"])["FileName"].tolist()
 
 # Load saved model
-SAVED_MODEL = load_model("../echoWeights.hdf5")
+SAVED_MODEL = load_model("echoWeights.hdf5")
 SEQUENCE_LENGTH = 30
 STRIDE = 1
 
