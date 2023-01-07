@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-from keras.preprocessing.image import img_to_array
+from keras_preprocessing.image import img_to_array
 from scipy.signal import find_peaks
 
 ''' Data management class to predict videos of arbitrary length '''
@@ -55,7 +55,7 @@ class Predict():
                 chunked_sequence.append(new)
         return chunked_sequence
     
-    def get_predictions(predictions):
+    def get_predictions(self, predictions):
         # invert predictions to find_peaks ES frames
         inverted = predictions * -1
     

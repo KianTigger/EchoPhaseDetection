@@ -1,4 +1,4 @@
-from keras.preprocessing.image import img_to_array, load_img
+from tensorflow.python.keras.utils import img_to_array, load_img
 import numpy as np
 
 """ Process each image in sequence and return as a numpy array """

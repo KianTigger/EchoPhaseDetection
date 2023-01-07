@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 from tqdm import tqdm
 from keras.models import load_model
-import keras.backend.tensorflow_backend as tfback
+import tensorflow.python.keras.backend as tfback
 import tensorflow as tf
 
 # Initialise GPU session
@@ -24,19 +24,20 @@ tf.config.list_logical_devices()
 ''' Generate multibeat predictions for videos of arbitrary length '''
 
 # Load filenames from csv or directory, or type one filename
-filenames = 
+filenames = pd.read_csv("../EchoNet-Dynamic/FileList.csv", usecols=["FileName"])["FileName"].tolist()
 
 # Load saved model
-SAVED_MODEL = load_model("")
-
+SAVED_MODEL = load_model("../echoWeights.hdf5")
 SEQUENCE_LENGTH = 30
 STRIDE = 1
 
 final_predictions = []
 
-for file in tqdm(filenames):
+# only use first video for testing
+# for file in tqdm(filenames):
+for file in tqdm(filenames[:10]):
 
-    file_path = f"{file}.avi" # Complete path to video files
+    file_path = f"../EchoNet-Dynamic/Videos/{file}.avi" # Complete path to video files
     
     predict = Predict(file_path, SEQUENCE_LENGTH, STRIDE) # Data management class object
     
