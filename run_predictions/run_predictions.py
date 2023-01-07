@@ -43,7 +43,7 @@ final_predictions = []
 
 # only use first video for testing
 # for file in tqdm(filenames):
-for file in tqdm(filenames[:10]):
+for file in tqdm(filenames):
 
     file_path = f"../EchoNet-Dynamic/Videos/{file}.avi" # Complete path to video files
     
