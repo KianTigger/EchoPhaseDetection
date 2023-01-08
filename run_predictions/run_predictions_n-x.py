@@ -55,10 +55,11 @@ SEQUENCE_LENGTH = 30
 STRIDE = 1
 
 final_predictions = []
+output_file = "multibeat_phase_detection.csv"
 
 #check if the csv exists
 try:
-    df = pd.read_csv("multibeat_phase_detection.csv")
+    df = pd.read_csv(output_file)
 except FileNotFoundError:
     df = pd.DataFrame()
 
@@ -123,14 +124,8 @@ for i, file in zip(range(x, len(filenames), n), tqdm(filenames[x::n])):
     
     df = pd.DataFrame(final_predictions)
     # append to csv
-    df.to_csv("multibeat_phase_detection.csv", mode='a', header=False, index=False)
+    df.to_csv(output_file, mode='a', header=False, index=False)
     final_predictions = []
-
-
-# Convert final predictions to dataframe    
-df = pd.DataFrame(final_predictions)
-# Save to csv
-df.to_csv("multibeat_phase_detection.csv", index=False)
     
 # Quit GPU session
 session.close()
