@@ -25,7 +25,7 @@ tf.config.list_logical_devices()
 
 # Set the path to the directory you want to access
 #Home PC
-# path = r"/mnt/c/Users/Kian Kordtomeikel/Documents/Coding/Dissertation/Datasets/EchoNet-Dynamic"
+path = r"/mnt/c/Users/Kian Kordtomeikel/Documents/Coding/Dissertation/Datasets/EchoNet-Dynamic"
 #Uni HPC
 path = "../EchoNet-Dynamic"
 
@@ -54,7 +54,7 @@ if not df.empty:
 else:
     values = []
 
-for i, file in zip(range(1, len(filenames), 4), tqdm(filenames[::4])):
+for i, file in zip(range(1, len(filenames), 4), tqdm(filenames[1::4])):
     count = i + 1
     
     if str(count) in values:
