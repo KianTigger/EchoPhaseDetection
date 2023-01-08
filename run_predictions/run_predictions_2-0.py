@@ -54,10 +54,10 @@ if not df.empty:
 else:
     values = []
 
-for i, file in zip(range(1, len(filenames), 2), tqdm(filenames[::2])):
+for i, file in zip(range(0, len(filenames), 2), tqdm(filenames[::2])):
     count = i + 1
-    
-    if str(count) in values:
+
+    if str(i + 1) in values:
         print("Video " + str(count) + " already processed")
         continue
 

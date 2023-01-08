@@ -41,8 +41,12 @@ STRIDE = 1
 
 final_predictions = []
 
-#Check if video is already processed by seeing if str(count) is in the first column of the csv
-df = pd.read_csv("multibeat_phase_detection.csv")
+#check if the csv exists
+try:
+    df = pd.read_csv("multibeat_phase_detection.csv")
+except FileNotFoundError:
+    df = pd.DataFrame()
+
 # if df isn't empty
 if not df.empty:
     values = df[df.columns[0]].values
