@@ -25,9 +25,9 @@ tf.config.list_logical_devices()
 
 # Set the path to the directory you want to access
 #Home PC
-path = r"/mnt/c/Users/Kian Kordtomeikel/Documents/Coding/Dissertation/Datasets/EchoNet-Dynamic"
+# path = r"/mnt/c/Users/Kian Kordtomeikel/Documents/Coding/Dissertation/Datasets/EchoNet-Dynamic"
 #Uni HPC
-# path = "../EchoNet-Dynamic"
+path = "../EchoNet-Dynamic"
 
 filenames = pd.read_csv(path + "/FileList.csv", usecols=["FileName"])["FileName"].tolist()
 
