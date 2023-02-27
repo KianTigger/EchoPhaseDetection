@@ -91,7 +91,7 @@ for file in tqdm(filenames):
 df = pd.DataFrame(final_predictions, columns=["FileName", "ED Prediction", "ES Prediction"])
 
 # save the dataframe to a CSV file
-df.to_csv("PhasesList.csv", index=False)
+df.to_csv("PhasesPredictionsList.csv", index=False)
     
 # Quit GPU session
 session.close()
