@@ -85,13 +85,13 @@ for file in tqdm(filenames):
     # Get predictions for ED and ES phases
     ED_predictions, ES_predictions = predict.get_predictions(predictions)
     
-    final_predictions.append([file, "ED", ED_predictions])
-    final_predictions.append([file, "ES", ES_predictions])
+    final_predictions.append([file, ED_predictions, ES_predictions])
 
-# Convert final predictions to dataframe    
-df = pd.DataFrame(final_predictions)
-# Save to csv
-df.to_csv("multibeat_phase_detection.csv", index=False)
+# create a dataframe from final_predictions
+df = pd.DataFrame(final_predictions, columns=["FileName", "ED Prediction", "ES Prediction"])
+
+# save the dataframe to a CSV file
+df.to_csv("PhasesList.csv", index=False)
     
 # Quit GPU session
 session.close()
