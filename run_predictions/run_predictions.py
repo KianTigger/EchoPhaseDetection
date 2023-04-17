@@ -91,9 +91,6 @@ for file in tqdm(filenamesA4C):
     
     final_predictions.append([file, ED_predictions, ES_predictions])
 
-# create a dataframe from final_predictions
-df = pd.DataFrame(final_predictions, columns=["FileName", "ED Prediction", "ES Prediction"])
-
 for file in tqdm(filenamesPSAX):
 
     file_path = f"{pathPSAX}/Videos/{file}.avi" # Complete path to video files
@@ -139,10 +136,8 @@ for file in tqdm(filenamesPSAX):
 # create a dataframe from final_predictions
 df = pd.DataFrame(final_predictions, columns=["FileName", "ED Prediction", "ES Prediction"])
 
-# Convert final predictions to dataframe    
-df = pd.DataFrame(final_predictions)
 # Save to csv
-df.to_csv("multibeat_phase_detection.csv", index=False)
+df.to_csv(path + "multibeat_phase_detection.csv", index=False)
     
 # Quit GPU session
 session.close()
