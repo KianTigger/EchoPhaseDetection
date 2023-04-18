@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 from tqdm import tqdm
 from keras.models import load_model
-import tensorflow.python.keras.backend as tfback
+import tensorflow.keras.backend as tfback
 import tensorflow as tf
 import argparse
 
@@ -31,6 +31,7 @@ def _get_available_gpus():
         tfback._LOCAL_DEVICES = [x.name for x in devices]
     return [x for x in tfback._LOCAL_DEVICES if 'device:gpu' in x.lower()]
 
+
 tfback._get_available_gpus = _get_available_gpus
 tfback._get_available_gpus
 
@@ -42,7 +43,11 @@ tf.config.list_logical_devices()
 #Home PC
 path = r"/mnt/c/Users/Kian Kordtomeikel/Documents/Coding/Dissertation/Datasets/EchoNet-Dynamic"
 #Uni HPC
-path = "../EchoNet-Dynamic"
+# path = "../../"
+# pathA4C = "../../Datasets/EchoNet-Pediatric/A4C"
+# pathPSAX = "../../Datasets/EchoNet-Pediatric/PSAX"
+# path = "../EchoNet-Dynamic"
+path = "../../Datasets/EchoNet-Pediatric/A4C"
 
 filenames = pd.read_csv(path + "/FileList.csv", usecols=["FileName"])["FileName"].tolist()
 
@@ -55,7 +60,7 @@ SEQUENCE_LENGTH = 30
 STRIDE = 1
 
 final_predictions = []
-output_file = "multibeat_phase_detection.csv"
+output_file = "multibeat_phase_detection_pediatrtic_a4c.csv"
 
 #check if the csv exists
 try:
@@ -81,7 +86,7 @@ for i, file in zip(range(x, len(filenames), n), tqdm(filenames[x::n])):
         print("Video " + str(count) + " already processed")
         continue
 
-    file_path = path + f"/Videos/{file}.avi" # Complete path to video files
+    file_path = path + f"/Videos/{file}" # Complete path to video files
     
     predict = Predict(file_path, SEQUENCE_LENGTH, STRIDE) # Data management class object
     
