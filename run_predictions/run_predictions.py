@@ -1,3 +1,4 @@
+import os
 from processing import Predict
 import pandas as pd
 import numpy as np
@@ -5,7 +6,7 @@ from tqdm import tqdm
 from keras.models import load_model
 # import tensorflow.python.keras.backend as tfback
 # HPC doesn't need the .python
-import tensorflow.keras.backend as tfback
+import tensorflow.python.keras.backend as tfback
 import tensorflow as tf
 
 # Initialise GPU session
@@ -23,15 +24,20 @@ tfback._get_available_gpus
 
 tf.config.list_logical_devices()
 
+print("Num GPUs Available: ", tf.config.list_logical_devices())
+
+
 ''' Generate multibeat predictions for videos of arbitrary length '''
 
 # Set the path to the directory you want to access
 #Home PC
-# path = r"/mnt/c/Users/Kian Kordtomeikel/Documents/Coding/Dissertation/Datasets/EchoNet-Dynamic"
+path = "../../"
+pathA4C = "../../Datasets/EchoNet-Pediatric/A4C"
+pathPSAX = "../../Datasets/EchoNet-Pediatric/PSAX"
 #Uni HPC
-path = "../EchoNet-Pediatric/"
-pathA4C = "../EchoNet-Pediatric/A4C"
-pathPSAX = "../EchoNet-Pediatric/PSAX"
+# path = "../EchoNet-Pediatric/"
+# pathA4C = "../EchoNet-Pediatric/A4C"
+# pathPSAX = "../EchoNet-Pediatric/PSAX"
 
 filenamesA4C = pd.read_csv(pathA4C + "/FileList.csv", usecols=["FileName"])["FileName"].tolist()
 filenamesPSAX = pd.read_csv(pathPSAX + "/FileList.csv", usecols=["FileName"])["FileName"].tolist()
@@ -51,49 +57,7 @@ final_predictions = []
 # for file in tqdm(filenames):
 for file in tqdm(filenamesA4C):
 
-    file_path = f"{pathA4C}/Videos/{file}.avi" # Complete path to video files
-    
-    predict = Predict(file_path, SEQUENCE_LENGTH, STRIDE) # Data management class object
-    
-    frames = predict.get_frames()
-    
-    image_sequence = predict.get_image_sequence(frames)
-    
-    # Input chunked to sequence length by window and stride
-    chunked_sequence = predict.get_chunked_sequence(image_sequence)
-    
-    # create empty np array for predictions
-    pred=np.arange(int(len(image_sequence)),dtype=float)
-    pred=np.full_like(pred,np.nan,dtype=float)
-    
-    # run sliding window predictions with stride
-    start=0
-    end = SEQUENCE_LENGTH
-
-    # Generate prediction for each chunked sequence
-    for i in range(len(chunked_sequence)):
-      tempArr=np.arange(int(len(image_sequence)),dtype=float)
-      tempArr=np.full_like(tempArr,np.nan,dtype=float)
-      prediction = SAVED_MODEL.predict(np.expand_dims(chunked_sequence[i], axis=0), verbose=0)
-      tempArr[start:end]=prediction
-      pred=np.vstack([pred,tempArr])
-      start+=STRIDE
-      end+=STRIDE
-
-    # Calculate the mean of all predictions
-    mean = np.nanmean(pred,axis=0)
-    
-    # remove padded frames from predictions
-    predictions = np.resize(mean, mean.size-predict.num_padded_frames)
-    
-    # Get predictions for ED and ES phases
-    ED_predictions, ES_predictions = predict.get_predictions(predictions)
-    
-    final_predictions.append([file, ED_predictions, ES_predictions])
-
-for file in tqdm(filenamesPSAX):
-
-    file_path = f"{pathPSAX}/Videos/{file}.avi" # Complete path to video files
+    file_path = f"{pathA4C}/Videos/{file}" # Complete path to video files
     
     predict = Predict(file_path, SEQUENCE_LENGTH, STRIDE) # Data management class object
     
@@ -137,7 +101,57 @@ for file in tqdm(filenamesPSAX):
 df = pd.DataFrame(final_predictions, columns=["FileName", "ED Prediction", "ES Prediction"])
 
 # Save to csv
-df.to_csv(path + "multibeat_phase_detection.csv", index=False)
+df.to_csv(path + "multibeat_phase_detection_pediatric_A4C.csv", index=False)
+
+final_predictions = []
+
+for file in tqdm(filenamesPSAX):
+
+    file_path = f"{pathPSAX}/Videos/{file}" # Complete path to video files
+    
+    predict = Predict(file_path, SEQUENCE_LENGTH, STRIDE) # Data management class object
+    
+    frames = predict.get_frames()
+    
+    image_sequence = predict.get_image_sequence(frames)
+    
+    # Input chunked to sequence length by window and stride
+    chunked_sequence = predict.get_chunked_sequence(image_sequence)
+    
+    # create empty np array for predictions
+    pred=np.arange(int(len(image_sequence)),dtype=float)
+    pred=np.full_like(pred,np.nan,dtype=float)
+    
+    # run sliding window predictions with stride
+    start=0
+    end = SEQUENCE_LENGTH
+
+    # Generate prediction for each chunked sequence
+    for i in range(len(chunked_sequence)):
+      tempArr=np.arange(int(len(image_sequence)),dtype=float)
+      tempArr=np.full_like(tempArr,np.nan,dtype=float)
+      prediction = SAVED_MODEL.predict(np.expand_dims(chunked_sequence[i], axis=0), verbose=0)
+      tempArr[start:end]=prediction
+      pred=np.vstack([pred,tempArr])
+      start+=STRIDE
+      end+=STRIDE
+
+    # Calculate the mean of all predictions
+    mean = np.nanmean(pred,axis=0)
+    
+    # remove padded frames from predictions
+    predictions = np.resize(mean, mean.size-predict.num_padded_frames)
+    
+    # Get predictions for ED and ES phases
+    ED_predictions, ES_predictions = predict.get_predictions(predictions)
+    
+    final_predictions.append([file, ED_predictions, ES_predictions])
+
+# create a dataframe from final_predictions
+df = pd.DataFrame(final_predictions, columns=["FileName", "ED Prediction", "ES Prediction"])
+
+# Save to csv
+df.to_csv(path + "multibeat_phase_detection_pediatric_PSAX.csv", index=False)
     
 # Quit GPU session
 session.close()

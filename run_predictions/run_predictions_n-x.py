@@ -44,10 +44,10 @@ tf.config.list_logical_devices()
 path = r"/mnt/c/Users/Kian Kordtomeikel/Documents/Coding/Dissertation/Datasets/EchoNet-Dynamic"
 #Uni HPC
 # path = "../../"
-# pathA4C = "../../Datasets/EchoNet-Pediatric/A4C"
+# pathPSAX = "../../Datasets/EchoNet-Pediatric/PSAX"
 # pathPSAX = "../../Datasets/EchoNet-Pediatric/PSAX"
 # path = "../EchoNet-Dynamic"
-path = "../Datasets/EchoNet-Pediatric/A4C"
+path = "../Datasets/EchoNet-Pediatric/PSAX"
 
 filenames = pd.read_csv(path + "/FileList.csv", usecols=["FileName"])["FileName"].tolist()
 
@@ -60,7 +60,7 @@ SEQUENCE_LENGTH = 30
 STRIDE = 1
 
 final_predictions = []
-output_file = "multibeat_phase_detection_pediatrtic_a4c.csv"
+output_file = "multibeat_phase_detection_pediatrtic_psax.csv"
 
 #check if the csv exists
 try:
