@@ -47,7 +47,7 @@ path = r"/mnt/c/Users/Kian Kordtomeikel/Documents/Coding/Dissertation/Datasets/E
 # pathA4C = "../../Datasets/EchoNet-Pediatric/A4C"
 # pathPSAX = "../../Datasets/EchoNet-Pediatric/PSAX"
 # path = "../EchoNet-Dynamic"
-path = "../../Datasets/EchoNet-Pediatric/A4C"
+path = "../Datasets/EchoNet-Pediatric/A4C"
 
 filenames = pd.read_csv(path + "/FileList.csv", usecols=["FileName"])["FileName"].tolist()
 
